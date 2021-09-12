@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Item from "../components/item";
 import { BACKEND_URL } from "../config";
 
-const Home = () => {
+const HomePage = () => {
 	const [users, setUsers] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const random = Math.floor(Math.random() * 3);
@@ -13,10 +13,11 @@ const Home = () => {
 
 	const fetchData = async () => {
 		setLoading(true);
+
 		const res = await fetch(`${BACKEND_URL}/api/users`);
 		const data = await res.json();
 
-		const res2 = await fetch(`${BACKEND_URL}/api/user/${random + 1}`);
+		const res2 = await fetch(`${BACKEND_URL}/api/users/${random + 1}`);
 		const data2 = await res2.json();
 
 		setUsers(data, data2);
@@ -39,4 +40,4 @@ const Home = () => {
 	);
 };
 
-export default Home;
+export default HomePage;

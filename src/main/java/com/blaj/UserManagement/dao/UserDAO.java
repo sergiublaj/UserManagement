@@ -5,15 +5,13 @@ import com.blaj.UserManagement.model.User;
 import java.util.List;
 
 public interface UserDAO {
-   void saveUser(User newUser);
+    User getUser(int id);
 
-   User getUser(int id);
+    List<User> getAllUsers();
 
-   List<User> getAllUsers();
+    void saveUser(User newUser);
 
-   List<User> getAllUsersWithGivenName(String givenName);
+    void updateUser(User updatedUser, int userId);
 
-   void setUserEmail(int userId, String newEmail);
-
-   void deleteUser(int userId);
+    void deleteUser(int userId);
 }
