@@ -2,29 +2,39 @@ package com.blaj.UserManagement.service;
 
 import com.blaj.UserManagement.dao.UserDAO;
 import com.blaj.UserManagement.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 public class UserService {
-   private final UserDAO userDAO;
+    @Autowired
+    private UserDAO userDAO;
 
-   public UserService(UserDAO userDAO) {
-      this.userDAO = userDAO;
-   }
+    @Transactional
+    public User getUser(int id) {
+        return userDAO.getUser(id);
+    }
 
-   public void saveUser(User newUser) {userDAO.saveUser(newUser);}
+    @Transactional
+    public List<User> getAllUsers() {
+        return userDAO.getAllUsers();
+    }
 
-   public User getUser(int id) {
-      return userDAO.getUser(id);
-   }
+    @Transactional
+    public void saveUser(User newUser) {
+        userDAO.saveUser(newUser);
+    }
 
-   public List<User> getAllUsers() { return userDAO.getAllUsers(); }
+    @Transactional
+    public void updateUser(User updatedUser, int userId) {
+        userDAO.updateUser(updatedUser, userId);
+    }
 
-   public List<User> getAllUsersWithGivenName(String givenName) { return userDAO.getAllUsersWithGivenName(givenName); }
-
-   public void setUserEmail(int userId, String newEmail) { userDAO.setUserEmail(userId, newEmail);}
-
-   public void deleteUser(int userId) { userDAO.deleteUser(userId);}
+    @Transactional
+    public void deleteUser(int userId) {
+        userDAO.deleteUser(userId);
+    }
 }

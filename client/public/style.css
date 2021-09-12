@@ -2,20 +2,57 @@
 
 html {
 	font-family: "Roboto";
-	margin-left: auto;
-	margin-right: auto;
-	width: 1000px;
+	margin-left: 10%;
+	margin-right: 10%;
 }
 
 .card {
 	margin-top: 1em;
 	padding-left: 1em;
 	padding-top: 1px;
-	padding-bottom: 1px;
 	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
 }
 
-.card:hover {
-	transform: scale(1.01);
-	transition: 0.1s;
+.container {
+	overflow: hidden;
+	position: relative;
+	width: 100%;
+}
+
+.primary-content {
+	width: 70%;
+	height: 100%;
+}
+
+.secondary-content {
+	display: inline-flex;
+	justify-content: flex-end;
+	position: absolute;
+	top: 0;
+	right: 10px;
+	width: 30%;
+	height: 100%;
+}
+
+.form-icon {
+	width: 28px;
+}
+
+.fa-2x {
+	vertical-align: middle;
+	float: left;
+}
+
+.card-tools {
+	margin-top: 2.5em;
+}
+
+.card-tool {
+	margin-left: 1em;
+	cursor: pointer;
+}
+
+.btn-block {
+	display: block;
+	width: 100%;
 }
