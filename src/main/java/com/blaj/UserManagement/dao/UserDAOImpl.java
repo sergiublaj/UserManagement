@@ -29,14 +29,15 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public void saveUser(User newUser) {
+    public int saveUser(User newUser) {
         Session session = sessionFactory.openSession();
         session.save(newUser);
         session.close();
+        return newUser.getId();
     }
 
     @Override
-    public void updateUser(User updatedUser, int userId) {
+    public User updateUser(User updatedUser, int userId) {
         Session session = sessionFactory.openSession();
         Transaction txn = session.beginTransaction();
         Query theQuery = session.createQuery("update User set name=:name, email=:email where id=:userId");
@@ -45,6 +46,7 @@ public class UserDAOImpl implements UserDAO {
         theQuery.setParameter("userId", userId);
         theQuery.executeUpdate();
         txn.commit();
+        return updatedUser;
     }
 
     @Override

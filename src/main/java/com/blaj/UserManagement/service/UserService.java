@@ -24,13 +24,13 @@ public class UserService {
     }
 
     @Transactional
-    public void saveUser(User newUser) {
-        userDAO.saveUser(newUser);
+    public int saveUser(User newUser) {
+        return userDAO.saveUser(newUser);
     }
 
     @Transactional
-    public void updateUser(User updatedUser, int userId) {
-        userDAO.updateUser(updatedUser, userId);
+    public User updateUser(User updatedUser, int userId) {
+        return userDAO.updateUser(updatedUser, userId);
     }
 
     @Transactional

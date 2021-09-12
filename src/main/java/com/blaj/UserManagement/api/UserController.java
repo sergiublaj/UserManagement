@@ -35,23 +35,19 @@ public class UserController {
 
     @PostMapping("/users")
     public int addUser(@RequestBody User newUser) {
-        userService.saveUser(newUser);
-
-        return 1;
+        return userService.saveUser(newUser);
     }
 
-    @PutMapping("/users")
-    public int updateUser(@RequestBody User newUser) {
-        userService.saveUser(newUser);
+    @PutMapping("/users/{userId}")
+    public User updateUser(@RequestBody User updatedUser, int userId) {
+        userService.updateUser(updatedUser, userId);
 
-        return 1;
+        return updatedUser;
     }
 
     @DeleteMapping("/users/{userId}")
-    public int deleteUser(@PathVariable int userId) {
+    public void deleteUser(@PathVariable int userId) {
         userService.deleteUser(userId);
-
-        return 1;
     }
 
     @ExceptionHandler
