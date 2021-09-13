@@ -1,5 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import * as userApi from "../../api/userApi";
+import { persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
 
 const initialState = {
 	users: [],
@@ -20,6 +22,9 @@ export const userSlice = createSlice({
 		setCurrentUser: (state, action) => {
 			state.current = action.payload;
 		},
+		deleteUser: (state, action) => {
+			state.users = state.users.filter((user) => user.id !== action.payload);
+		},
 	},
 	extraReducers: (builder) => {
 		builder.addCase(receiveUsersAsync.fulfilled, (state, action) => {
@@ -28,5 +33,11 @@ export const userSlice = createSlice({
 	},
 });
 
-export const { setCurrentUser } = userSlice.actions;
-export default userSlice.reducer;
+const persistConfig = {
+	keyPrefix: "um-",
+	key: "user",
+	storage,
+};
+
+export const { setCurrentUser, deleteUser } = userSlice.actions;
+export default persistReducer(persistConfig, userSlice.reducer);

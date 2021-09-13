@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Item from "../components/item";
-import { BACKEND_URL } from "../config";
+import { BACKEND_URL } from "../utils/config";
 
 const HomePage = () => {
 	const [users, setUsers] = useState([]);
 	const [loading, setLoading] = useState(false);
-	const random = Math.floor(Math.random() * 3);
 
 	useEffect(() => {
 		fetchData();
@@ -14,13 +13,11 @@ const HomePage = () => {
 	const fetchData = async () => {
 		setLoading(true);
 
+		// nu bun
 		const res = await fetch(`${BACKEND_URL}/api/users`);
 		const data = await res.json();
 
-		const res2 = await fetch(`${BACKEND_URL}/api/users/${random + 1}`);
-		const data2 = await res2.json();
-
-		setUsers(data, data2);
+		setUsers(data);
 
 		setLoading(false);
 	};
@@ -33,9 +30,6 @@ const HomePage = () => {
 			{users.map((user) => (
 				<Item user={user} key={"child" + user.name} />
 			))}
-
-			<h1>Selecting the {random + 1}th user</h1>
-			<Item user={users[random]} key={"random"} />
 		</>
 	);
 };

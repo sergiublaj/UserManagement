@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api")
 public class UserController {
     @Autowired
@@ -34,15 +35,13 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public int addUser(@RequestBody User newUser) {
+    public User addUser(@RequestBody User newUser) {
         return userService.saveUser(newUser);
     }
 
     @PutMapping("/users/{userId}")
-    public User updateUser(@RequestBody User updatedUser, int userId) {
-        userService.updateUser(updatedUser, userId);
-
-        return updatedUser;
+    public User updateUser(@RequestBody User updatedUser, @PathVariable int userId) {
+        return userService.updateUser(updatedUser, userId);
     }
 
     @DeleteMapping("/users/{userId}")

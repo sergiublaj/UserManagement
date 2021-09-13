@@ -2,8 +2,8 @@ import React, { Suspense } from "react";
 import { Route, Switch } from "react-router-dom";
 
 import HomePage from "../pages/HomePage";
-import AboutPage from "../pages/NotFoundPage";
-import NotFoundPage from "../pages/AboutPage";
+import AboutPage from "../pages/AboutPage";
+import NotFoundPage from "../pages/NotFoundPage";
 
 const AppRoutes = () => {
 	return (

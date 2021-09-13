@@ -9,7 +9,7 @@ public interface UserDAO {
 
     List<User> getAllUsers();
 
-    int saveUser(User newUser);
+    User saveUser(User newUser);
 
     User updateUser(User updatedUser, int userId);
 
