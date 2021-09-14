@@ -14,7 +14,7 @@ const Item = (props) => {
 		const cardTarget = e.target.parentNode.parentNode.parentNode.children[0];
 
 		const nameSpan = cardTarget.children[0].children[1];
-		nameSpan.remove();
+		nameSpan.innerHTML = "Name: ";
 
 		const input = document.createElement("input");
 		input.value = name;
@@ -22,7 +22,7 @@ const Item = (props) => {
 		cardTarget.children[0].appendChild(input);
 
 		const emailSpan = cardTarget.children[1].children[1];
-		emailSpan.remove();
+		emailSpan.innerHTML = "Email: ";
 
 		const input2 = document.createElement("input");
 		input2.value = email;
@@ -44,31 +44,25 @@ const Item = (props) => {
 	const updateUser = async (e) => {
 		const cardTarget = e.target.parentNode.parentNode.parentNode.children[0];
 
-		const nameInput = cardTarget.children[0].children[1];
-		const emailInput = cardTarget.children[1].children[1];
+		const nameInput = cardTarget.children[0].children[2];
+		const emailInput = cardTarget.children[1].children[2];
 
-		const newUser = {
+		const updatedUser = {
 			name: nameInput.value,
 			email: emailInput.value,
 		};
-		const { name, email } = newUser;
+		const { name, email } = updatedUser;
 
-		cardTarget.remove();
+		nameInput.remove();
 		emailInput.remove();
 
-		const nameSpan = document.createElement("span");
-		nameSpan.className = "name-span";
-		nameSpan.innerHTML = name;
-		cardTarget.children[0].appendChild(nameSpan);
+		const nameSpan = cardTarget.children[0].children[1];
+		nameSpan.innerHTML = `Name: ${name}`;
 
-		console.log(nameSpan);
+		const emailSpan = cardTarget.children[1].children[1];
+		emailSpan.innerHTML = `Email: ${email}`;
 
-		const emailSpan = document.createElement("span");
-		emailSpan.className = "email-span";
-		emailSpan.innerHTML = email;
-		cardTarget.children[1].appendChild(emailSpan);
-
-		dispatch(updateUserAsync(newUser, id));
+		dispatch(updateUserAsync({ updatedUser, id }));
 
 		toast("User edited successfully!");
 

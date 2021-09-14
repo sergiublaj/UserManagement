@@ -29,8 +29,8 @@ export const saveUserAsync = createAsyncThunk(
 
 export const updateUserAsync = createAsyncThunk(
 	"user/updateUser",
-	async (updatedUser, userId) => {
-		return await userApi.updateUser(updatedUser, userId);
+	async ({ updatedUser, id }) => {
+		return await userApi.updateUser(updatedUser, id);
 	}
 );
 
@@ -64,11 +64,9 @@ export const userSlice = createSlice({
 				state.users.push(action.payload);
 			})
 			.addCase(updateUserAsync.fulfilled, (state, action) => {
-				console.log(action.payload);
-
-				// state.users = state.users.map((user) =>
-				// 	user.id === action.payload.id ? action.payload : user
-				// );
+				state.users = state.users.map((user) =>
+					user.id === action.payload.id ? action.payload : user
+				);
 			})
 			.addCase(deleteUserAsync.fulfilled, (state, action) => {
 				state.users = state.users.filter((user) => user.id !== action.payload);
