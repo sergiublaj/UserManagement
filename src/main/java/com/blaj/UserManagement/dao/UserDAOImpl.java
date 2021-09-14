@@ -56,7 +56,7 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public void deleteUser(int userId) {
+    public int deleteUser(int userId) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         Query theQuery = session.createQuery("delete from User where id =:userId");
@@ -64,5 +64,6 @@ public class UserDAOImpl implements UserDAO {
         theQuery.executeUpdate();
         transaction.commit();
         session.close();
+        return userId;
     }
 }

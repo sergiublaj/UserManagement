@@ -1,37 +1,49 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+import { connect, useDispatch } from "react-redux";
+import UserForm from "../components/user-form";
 import Item from "../components/item";
-import { BACKEND_URL } from "../utils/config";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
+import { setLoading, getUsersAsync } from "../state/reducers/userSlice";
 
-const HomePage = () => {
-	const [users, setUsers] = useState([]);
-	const [loading, setLoading] = useState(false);
+const HomePage = (props) => {
+	const { users, loading } = props;
+
+	const dispatch = useDispatch();
 
 	useEffect(() => {
-		fetchData();
+		dispatch(setLoading(true));
+
+		dispatch(getUsersAsync());
+
+		dispatch(setLoading(false));
 	}, []);
 
-	const fetchData = async () => {
-		setLoading(true);
-
-		// nu bun
-		const res = await fetch(`${BACKEND_URL}/api/users`);
-		const data = await res.json();
-
-		setUsers(data);
-
-		setLoading(false);
-	};
-
-	return loading || users.length === 0 ? (
-		<div> Loading ...</div>
-	) : (
+	return (
 		<>
-			<h1>All users</h1>
-			{users.map((user) => (
-				<Item user={user} key={"child" + user.name} />
-			))}
+			<UserForm />
+			{loading ? (
+				<h1> Loading ...</h1>
+			) : users.length === 0 ? (
+				<h1> No users found. </h1>
+			) : (
+				<>
+					<h1>All users</h1>
+					<TransitionGroup>
+						{users.map((user) => (
+							<CSSTransition key={user.id} timeout={500} classNames="item">
+								<Item user={user} />
+							</CSSTransition>
+						))}
+					</TransitionGroup>
+				</>
+			)}
 		</>
 	);
 };
 
-export default HomePage;
+const mapStateToProps = (state) => ({
+	users: state.user.users,
+	loading: state.user.loading,
+});
+
+export default connect(mapStateToProps)(HomePage);

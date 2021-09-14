@@ -1,13 +1,11 @@
 import React from "react";
-import { connect, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import { BACKEND_URL } from "../utils/config";
-import { deleteUser } from "../state/reducers/userSlice";
+import { updateUserAsync, deleteUserAsync } from "../state/reducers/userSlice";
 
 const Item = (props) => {
 	const {
 		user: { id, name, email },
-		deleteUser,
 	} = props;
 
 	const dispatch = useDispatch();
@@ -38,9 +36,7 @@ const Item = (props) => {
 	};
 
 	const removeUser = async () => {
-		dispatch(deleteUser(id));
-
-		await fetch(`${BACKEND_URL}/api/users/${id}`, { method: "DELETE" });
+		dispatch(deleteUserAsync(id));
 
 		toast("User deleted!");
 	};
@@ -72,15 +68,7 @@ const Item = (props) => {
 		emailSpan.innerHTML = email;
 		cardTarget.children[1].appendChild(emailSpan);
 
-		const config = {
-			method: "PUT",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(newUser),
-		};
-
-		await fetch(`${BACKEND_URL}/api/users/${id}`, config);
+		dispatch(updateUserAsync(newUser, id));
 
 		toast("User edited successfully!");
 
@@ -115,4 +103,4 @@ const Item = (props) => {
 	);
 };
 
-export default connect(null, { deleteUser })(Item);
+export default Item;
