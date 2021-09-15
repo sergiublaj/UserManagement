@@ -16,6 +16,8 @@ const HomePage = (props) => {
 		dispatch(getUsersAsync());
 
 		dispatch(setLoading(false));
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (
@@ -23,7 +25,7 @@ const HomePage = (props) => {
 			<UserForm />
 			{loading ? (
 				<h1> Loading ...</h1>
-			) : users.length === 0 ? (
+			) : users === null || users.length === 0 ? (
 				<h1> No users found. </h1>
 			) : (
 				<>

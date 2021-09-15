@@ -1,75 +1,78 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { updateUserAsync, deleteUserAsync } from "../state/reducers/userSlice";
 
 const Item = (props) => {
-	const {
-		user: { id, name, email },
-	} = props;
+	const [updatedUser, setUpdatedUser] = useState({
+		name: props.user.name,
+		email: props.user.email,
+	});
+	const { id } = props.user;
+	const { name, email } = updatedUser;
 
 	const dispatch = useDispatch();
+
+	useEffect(() => {
+		const editButton = document.getElementById(`edit-${id}-${name}`);
+		editButton.onclick = editUser;
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
+	const formHandler = (e) => {
+		const { name, value } = e.target;
+
+		setUpdatedUser({
+			...updatedUser,
+			[name]: value,
+		});
+	};
 
 	const editUser = (e) => {
 		const cardTarget = e.target.parentNode.parentNode.parentNode.children[0];
 
-		const nameSpan = cardTarget.children[0].children[1];
-		nameSpan.innerHTML = "Name: ";
+		const nameInput = cardTarget.children[0].children[1].children[0];
+		const emailInput = cardTarget.children[1].children[1].children[0];
 
-		const input = document.createElement("input");
-		input.value = name;
-		input.style.fontSize = "18px";
-		cardTarget.children[0].appendChild(input);
-
-		const emailSpan = cardTarget.children[1].children[1];
-		emailSpan.innerHTML = "Email: ";
-
-		const input2 = document.createElement("input");
-		input2.value = email;
-		input2.style.fontSize = "16px";
-		cardTarget.children[1].appendChild(input2);
+		nameInput.disabled = false;
+		emailInput.disabled = false;
 
 		const editButton = e.target;
 		editButton.className = "fas fa-save fa-lg card-tool";
-		editButton.removeEventListener("click", editUser);
-		editButton.addEventListener("click", updateUser);
+		editButton.onclick = updateUser;
 	};
 
-	const removeUser = async () => {
+	const removeUser = () => {
 		dispatch(deleteUserAsync(id));
 
 		toast("User deleted!");
 	};
 
-	const updateUser = async (e) => {
+	const updateUser = (e) => {
 		const cardTarget = e.target.parentNode.parentNode.parentNode.children[0];
 
-		const nameInput = cardTarget.children[0].children[2];
-		const emailInput = cardTarget.children[1].children[2];
+		const nameInput = cardTarget.children[0].children[1].children[0];
+		const emailInput = cardTarget.children[1].children[1].children[0];
 
-		const updatedUser = {
-			name: nameInput.value,
-			email: emailInput.value,
-		};
-		const { name, email } = updatedUser;
+		nameInput.disabled = true;
+		emailInput.disabled = true;
 
-		nameInput.remove();
-		emailInput.remove();
-
-		const nameSpan = cardTarget.children[0].children[1];
-		nameSpan.innerHTML = `Name: ${name}`;
-
-		const emailSpan = cardTarget.children[1].children[1];
-		emailSpan.innerHTML = `Email: ${email}`;
-
-		dispatch(updateUserAsync({ updatedUser, id }));
+		dispatch(
+			updateUserAsync({
+				updatedUser: {
+					name: nameInput.value,
+					email: emailInput.value,
+				},
+				id,
+			})
+		);
 
 		toast("User edited successfully!");
 
 		const saveButton = e.target;
 		saveButton.className = "fas fa-pen fa-lg card-tool";
-		saveButton.removeEventListener("click", updateUser);
-		saveButton.addEventListener("click", editUser);
+		saveButton.onclick = editUser;
 	};
 
 	return (
@@ -77,18 +80,39 @@ const Item = (props) => {
 			<div className="container">
 				<div className="primary-content">
 					<h3>
-						<i className="far fa-id-card form-icon" />{" "}
-						<span className="name-card"> Name: {name} </span>
+						<i className="far fa-id-card form-icon" />
+						<label>
+							Name:{" "}
+							<input
+								type="text"
+								name="name"
+								value={name}
+								onChange={formHandler}
+								disabled
+							/>
+						</label>
 					</h3>
 					<h4>
 						<i className="far fa-envelope form-icon" />
-						<span className="email-card"> Email: {email} </span>
+						<label>
+							Email:{" "}
+							<input
+								type="text"
+								name="email"
+								value={email}
+								onChange={formHandler}
+								disabled
+							/>
+						</label>
 					</h4>
 				</div>
 
 				<div className="secondary-content">
 					<div className="card-tools">
-						<i className="fas fa-pen fa-lg card-tool" onClick={editUser} />
+						<i
+							id={`edit-${id}-${name}`}
+							className="fas fa-pen fa-lg card-tool"
+						/>
 						<i className="fas fa-trash fa-lg card-tool" onClick={removeUser} />
 					</div>
 				</div>
